@@ -47,6 +47,18 @@ Keep this file in the repo and **commit it** with your fixes.
 
 ## Bug 4
 
+**How to reproduce:** Inspect the seeded expense "Uber to airport" ($60 paid by Diya, split between Aisha and Ben). Diya did not ride in the cab and was omitted from the split. In the balances, Diya is credited only +$30 instead of her full +$60. Summing all balances yields -$30.00 instead of $0.00, meaning money was destroyed.
+
+**What is wrong:** In `src/lib/balances.js`, an unnecessary check `if (!(exp.paidBy in shares) && !(String(exp.paidBy) in shares))` deducted `Number(exp.amount) / n` from the payer's balance whenever they were not included in `splitWith`. This directly contradicted the specification in README.md ("Paying for other people... They should get that fare back in full... Closed group, not a bank") and violated the fundamental accounting invariant that the sum of all net positions across the closed group must equal zero.
+
+**What I changed:**
+- In `src/lib/balances.js`, deleted lines 16–19 that deducted a share from non-participating payers. The payer is now credited the full payment, and only participants listed in `shares` are charged their respective shares.
+- Added rounding to 2 decimal places for all final balance figures (`Math.round(bal[id] * 100) / 100`) to eliminate floating-point representation artifacts.
+
+---
+
+## Bug 5
+
 **How to reproduce:**
 
 **What is wrong:**

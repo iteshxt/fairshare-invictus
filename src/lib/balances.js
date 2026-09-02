@@ -12,11 +12,10 @@ export function computeBalances(members, expenses) {
       const key = Number(id);
       bal[key] = (bal[key] || 0) - share;
     }
+  }
 
-    if (!(exp.paidBy in shares) && !(String(exp.paidBy) in shares)) {
-      const n = exp.splitWith.length || 1;
-      bal[exp.paidBy] -= Number(exp.amount) / n;
-    }
+  for (const id of Object.keys(bal)) {
+    bal[id] = Math.round(bal[id] * 100) / 100;
   }
 
   return bal;

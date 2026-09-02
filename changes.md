@@ -80,7 +80,22 @@ This file tracks all modifications, bug fixes, enhancements, and file diffs made
   - Refactored `splitByPercent` to allocate integer cents and absorb residual cents in the final participant's share.
   - Hardened `percentsSumTo100` to reject negative/non-finite percentages and check `Math.abs(sum - 100) < 0.01`.
 - **Tests Added/Updated**: `tests/money.test.js` all 5 tests passing.
-- **Commit**: `fix: preserve exact split totals without penny loss and validate percentages` (Pending approval)
+- **Commit**: `fbf5d14` - `fix: preserve exact split totals without penny loss and validate percentages`
+- **Status**: Committed.
+
+---
+
+### Bug 4: Non-Participating Payer Overcharged in computeBalances
+- **Affected Files**:
+  - `src/lib/balances.js`
+  - `BUGS.md`
+- **Issue Description**: Payers not included in the split are charged an extra share, breaking the zero-sum balance invariant across the closed group.
+- **Root Cause**: Lines 16–19 subtracted `Number(exp.amount) / n` from the payer's balance when they were not present in `shares`.
+- **Fix Details**:
+  - Removed lines 16–19 in `src/lib/balances.js` so payers retain 100% credit for amounts paid.
+  - Added clean rounding to 2 decimals for all final member balances.
+- **Tests Added/Updated**: `tests/balances.test.js` both tests passing.
+- **Commit**: `fix: credit non-participating payers in full and enforce zero-sum balances` (Pending approval)
 - **Status**: Ready for commit approval.
 
 ---
