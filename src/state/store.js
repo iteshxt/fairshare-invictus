@@ -44,11 +44,25 @@ export function reducer(state, action) {
       return { ...state, expenses: [...state.expenses, action.expense] };
     }
     case "DELETE_EXPENSE": {
+      if (action.id !== undefined) {
+        return {
+          ...state,
+          expenses: state.expenses.filter((e) => e.id !== action.id),
+        };
+      }
       const next = state.expenses.slice();
       next.splice(action.index, 1);
       return { ...state, expenses: next };
     }
     case "UPDATE_EXPENSE": {
+      if (action.id !== undefined) {
+        return {
+          ...state,
+          expenses: state.expenses.map((e) =>
+            e.id === action.id ? { ...e, ...action.patch } : e
+          ),
+        };
+      }
       const next = state.expenses.slice();
       next[action.index] = { ...next[action.index], ...action.patch };
       return { ...state, expenses: next };
