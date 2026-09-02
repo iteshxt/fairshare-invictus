@@ -70,3 +70,22 @@ test("reducer updates expense by ID without mutating other expenses", () => {
   assert.equal(next.expenses.find((e) => e.id === "e3")?.amount, 240);
 });
 
+test("filtering by paidBy works with string and number representations", () => {
+  const expenses = [
+    { id: "e1", description: "Dinner", paidBy: 1 },
+    { id: "e2", description: "Uber", paidBy: 2 },
+    { id: "e3", description: "Coffee", paidBy: 1 },
+  ];
+
+  // Selecting member '1' in HTML select gives string "1"
+  const filterPaidBy = "1";
+  const filtered = expenses.filter((e) =>
+    filterPaidBy !== "" ? String(e.paidBy) === String(filterPaidBy) : true
+  );
+
+  assert.equal(filtered.length, 2);
+  assert.equal(filtered[0].id, "e1");
+  assert.equal(filtered[1].id, "e3");
+});
+
+

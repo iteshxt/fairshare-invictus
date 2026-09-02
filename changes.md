@@ -125,7 +125,22 @@ This file tracks all modifications, bug fixes, enhancements, and file diffs made
   - Corrected `bal > 0.005` to render `is owed ${formatMoney(bal)}` with `cls = "owed"`.
   - Corrected `bal < -0.005` to render `owes ${formatMoney(-bal)}` with `cls = "owe"`.
 - **Tests Added/Updated**: All 17 automated tests passing.
-- **Commit**: `fix: correct inverted debtor and creditor balance labels and styles` (Pending approval)
+- **Commit**: `2271d82` - `fix: correct inverted debtor and creditor balance labels and styles`
+- **Status**: Committed.
+
+---
+
+### Bug 7: "Paid by" Filter Strict Equality Failure
+- **Affected Files**:
+  - `src/App.jsx`
+  - `tests/store.test.js`
+  - `BUGS.md`
+- **Issue Description**: Filtering by any member in the "Paid by" dropdown displays 0 results.
+- **Root Cause**: Strict comparison `e.paidBy !== paidBy` compared number with HTML select string (`1 !== "1"`), failing every expense.
+- **Fix Details**:
+  - Converted both operands to strings using `String(e.paidBy) !== String(paidBy)` in `src/App.jsx`.
+- **Tests Added/Updated**: Added unit test in `tests/store.test.js` verifying string/number compatibility for `paidBy` filtering.
+- **Commit**: `fix: match paidBy filter using string conversion to resolve type mismatch` (Pending approval)
 - **Status**: Ready for commit approval.
 
 ---
