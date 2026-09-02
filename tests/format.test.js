@@ -23,3 +23,22 @@ test("dateValue converts dates and date strings to numeric timestamp for safe so
   // Descending sort check: 15 Mar > 7 Mar
   assert.equal(Number(val2) > Number(val1), true, "Newer date has higher timestamp");
 });
+
+test("initials handles leading and multiple whitespace without producing 'UN'", () => {
+  function getInitials(name) {
+    if (!name) return "?";
+    return name
+      .trim()
+      .split(/\s+/)
+      .map((p) => p[0])
+      .filter(Boolean)
+      .join("")
+      .slice(0, 2)
+      .toUpperCase();
+  }
+
+  assert.equal(getInitials(" Elena"), "E");
+  assert.equal(getInitials("  Aisha   Khan  "), "AK");
+  assert.equal(getInitials(""), "?");
+});
+

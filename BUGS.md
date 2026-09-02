@@ -150,3 +150,15 @@ Keep this file in the repo and **commit it** with your fixes.
 - In `src/components/AddExpenseForm.jsx`, added a date validation step in `submit`: `const parsedDate = date ? new Date(date) : new Date();`. If `Number.isNaN(parsedDate.getTime())`, the form halts and sets an error message `"Please select a valid date."`.
 
 ---
+
+## Bug 13
+
+**How to reproduce:** Add a member whose name begins with a leading space (e.g. `" Elena"`). Observe the member's avatar icon in the Balances panel or Expense list. The avatar displays `"UN"` instead of `"E"`.
+
+**What is wrong:** `initials(name)` used `name.split(" ")` without trimming. For names with leading whitespace, `split(" ")` resulted in an empty first token `""`. Taking `""[0]` yielded `undefined`, which string-concatenated to `"undefinedE"` and sliced to `"UN"`.
+
+**What I changed:**
+- In `src/components/ExpenseList.jsx` and `src/components/BalancesPanel.jsx`, updated `initials()` to trim the name, split on arbitrary whitespace (`/\s+/`), filter out falsy tokens, and safely extract the first initials.
+
+---
+

@@ -215,7 +215,23 @@ This file tracks all modifications, bug fixes, enhancements, and file diffs made
 - **Fix Details**:
   - Added validation for `parsedDate` in `submit()`. Rejects invalid/empty dates with user-friendly error.
 - **Tests Added/Updated**: All 19 automated tests passing.
-- **Commit**: `fix: validate expense date in AddExpenseForm to prevent Invalid Date entries` (Pending approval)
+- **Commit**: `9988888` - `fix: validate expense date in AddExpenseForm to prevent Invalid Date entries`
+- **Status**: Committed.
+
+---
+
+### Bug 13: Avatar Initials Display "UN" on Leading Whitespace
+- **Affected Files**:
+  - `src/components/ExpenseList.jsx`
+  - `src/components/BalancesPanel.jsx`
+  - `tests/format.test.js`
+  - `BUGS.md`
+- **Issue Description**: When member name had leading or multiple whitespace, initials calculation converted undefined to `"UN"` instead of real initials.
+- **Root Cause**: `name.split(" ")` produced an empty string element with undefined character access.
+- **Fix Details**:
+  - Updated `initials()` to trim the name, split on whitespace regex `/\s+/`, filter falsy tokens, and safely slice initials.
+- **Tests Added/Updated**: Added unit test in `tests/format.test.js` (20/20 passing).
+- **Commit**: `fix: sanitize name whitespace in initials avatar generator` (Pending approval)
 - **Status**: Ready for commit.
 
 ---

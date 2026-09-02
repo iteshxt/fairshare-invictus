@@ -3,9 +3,12 @@ import { formatMoney } from "../lib/money.js";
 import { dateValue, formatDate } from "../lib/format.js";
 
 function initials(name) {
+  if (!name) return "?";
   return name
-    .split(" ")
+    .trim()
+    .split(/\s+/)
     .map((p) => p[0])
+    .filter(Boolean)
     .join("")
     .slice(0, 2)
     .toUpperCase();
