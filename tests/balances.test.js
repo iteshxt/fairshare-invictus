@@ -2,9 +2,13 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { computeBalances, totalSpent } from "../src/lib/balances.js";
 
-test("totalSpent sums all expense amounts correctly", () => {
+test("totalSpent sums all expense amounts correctly and eliminates float drift", () => {
   const expenses = [{ amount: 10 }, { amount: 25.5 }, { amount: 14.5 }];
   assert.equal(totalSpent(expenses), 50);
+
+  // Floating point drift check (0.1 + 0.2 = 0.30000000000000004)
+  const floatExpenses = [{ amount: 0.1 }, { amount: 0.2 }];
+  assert.equal(totalSpent(floatExpenses), 0.3);
 });
 
 test("computeBalances credits payer 100% when payer is NOT in the split", () => {

@@ -162,3 +162,15 @@ Keep this file in the repo and **commit it** with your fixes.
 
 ---
 
+## Bug 14
+
+**How to reproduce:** In `AddExpenseForm`, select "Custom %", customize split percentages, then toggle one member off and submit. The unselected member's percentage was still attached in the `percents` object. Additionally, floating point addition in `totalSpent` produced unrounded IEEE 754 precision artifacts (e.g. `0.1 + 0.2 = 0.30000000000000004`).
+
+**What is wrong:** In `AddExpenseForm.jsx`, `percents` state preserved keys for deselected members rather than pruning them to active `splitWith` participants. In `src/lib/balances.js`, `totalSpent` did not round the sum to 2 decimal places. In `SummaryCards.jsx`, `filter` on `paidBy` used strict equality rather than string conversion.
+
+**What I changed:**
+- In `src/components/AddExpenseForm.jsx`, sanitized `activePercents` in `submit` to only retain keys present in `splitWith`.
+- In `src/lib/balances.js`, added `Math.round(sum * 100) / 100` to `totalSpent()`.
+- In `src/components/SummaryCards.jsx`, used `String(e.paidBy) === String(m.id)` and rounded individual paid sums to cents.
+
+---

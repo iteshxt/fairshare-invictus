@@ -70,9 +70,15 @@ export default function AddExpenseForm({ members, onAdd }) {
       setError("Pick at least one person to split with.");
       return;
     }
-    if (splitType === "percent" && !percentsSumTo100(percents)) {
-      setError("Percentages must add to 100.");
-      return;
+    const activePercents = {};
+    if (splitType === "percent") {
+      for (const id of splitWith) {
+        activePercents[id] = Number(percents[id] || 0);
+      }
+      if (!percentsSumTo100(activePercents)) {
+        setError("Percentages must add to 100.");
+        return;
+      }
     }
 
     onAdd({
@@ -81,7 +87,7 @@ export default function AddExpenseForm({ members, onAdd }) {
       paidBy: Number(paidBy),
       splitType,
       splitWith: splitWith.map(Number),
-      percents: splitType === "percent" ? percents : undefined,
+      percents: splitType === "percent" ? activePercents : undefined,
       date: parsedDate,
       category,
     });

@@ -8,9 +8,9 @@ export default function SummaryCards({ members, expenses, onAddMember }) {
   const perPerson = useMemo(() => {
     return members.map((m) => {
       const paid = expenses
-        .filter((e) => e.paidBy === m.id)
+        .filter((e) => String(e.paidBy) === String(m.id))
         .reduce((s, e) => s + Number(e.amount), 0);
-      return { id: m.id, name: m.name, paid };
+      return { id: m.id, name: m.name, paid: Math.round(paid * 100) / 100 };
     });
   }, [members, expenses]);
 

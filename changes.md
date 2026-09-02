@@ -231,7 +231,26 @@ This file tracks all modifications, bug fixes, enhancements, and file diffs made
 - **Fix Details**:
   - Updated `initials()` to trim the name, split on whitespace regex `/\s+/`, filter falsy tokens, and safely slice initials.
 - **Tests Added/Updated**: Added unit test in `tests/format.test.js` (20/20 passing).
-- **Commit**: `fix: sanitize name whitespace in initials avatar generator` (Pending approval)
+- **Commit**: `ee958f6` - `fix: sanitize name whitespace in initials avatar generator`
+- **Status**: Committed.
+
+---
+
+### Bug 14: Custom Split Key Sanitization, Float Drift in totalSpent, & Type-Safe Paid Calculations
+- **Affected Files**:
+  - `src/components/AddExpenseForm.jsx`
+  - `src/lib/balances.js`
+  - `src/components/SummaryCards.jsx`
+  - `tests/balances.test.js`
+  - `BUGS.md`
+- **Issue Description**: Custom % payload retained stale keys from deselected members; totalSpent accumulated IEEE 754 precision drift; SummaryCards lacked string coercion for paidBy.
+- **Root Cause**: Deselected members were not pruned from custom percentage payload; float sum was unrounded.
+- **Fix Details**:
+  - Sanitized `activePercents` in `AddExpenseForm` to strictly include IDs in `splitWith`.
+  - Added `Math.round(sum * 100) / 100` in `totalSpent()`.
+  - Used `String(e.paidBy) === String(m.id)` and rounded individual paid sums in `SummaryCards`.
+- **Tests Added/Updated**: Added unit test in `tests/balances.test.js` (21/21 passing).
+- **Commit**: `fix: sanitize custom split percent keys and eliminate float drift in totalSpent` (Pending approval)
 - **Status**: Ready for commit.
 
 ---

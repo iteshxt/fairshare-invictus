@@ -22,5 +22,6 @@ export function computeBalances(members, expenses) {
 }
 
 export function totalSpent(expenses) {
-  return expenses.reduce((s, e) => s + Number(e.amount), 0);
+  const sum = expenses.reduce((s, e) => s + Number(e.amount), 0);
+  return Math.round(sum * 100) / 100;
 }
