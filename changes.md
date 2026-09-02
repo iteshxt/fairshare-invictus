@@ -186,9 +186,21 @@ This file tracks all modifications, bug fixes, enhancements, and file diffs made
   - Added `min="0"` and `max="100"` bounds to percentage inputs.
   - Cleared `description` and `amount` fields on successful form submission.
 - **Tests Added/Updated**: All 19 automated tests passing.
-- **Commit**: `0306045` - `fix: synchronize AddExpenseForm with dynamic members and reset on submit`
+- **Commit**: `52d7b90` - `fix: synchronize AddExpenseForm with dynamic members and reset on submit`
 - **Status**: Committed.
 
 ---
 
-*(Bug fixes will be logged below one-by-one as we progress)*
+## Final Verification Summary
+- **Total Unit Tests**: 19 tests across 5 test suites.
+- **Pass Rate**: 100% (19/19 passing, 0 failing, 0 skipped).
+- **Core Invariants Verified**:
+  - Closed-group net balance conservation: $\sum \text{balances} = 0.00$.
+  - Exact cent division and percentage split preservation: $\sum \text{shares} = \text{amount}$.
+  - Non-participating payer full credit.
+  - Complete greedy settlement convergence without dropped transfers.
+  - State immutability and stable ID mutations.
+  - String/number type coercion in filters and IDs.
+  - LocalStorage Date rehydration.
+- **Build Status**: Vite production build succeeded cleanly.
+

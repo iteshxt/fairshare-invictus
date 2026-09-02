@@ -127,11 +127,3 @@ Keep this file in the repo and **commit it** with your fixes.
 - Automatically cleared `description` and `amount` form fields upon successful expense submission.
 
 ---
-
-
-
-
-
-
-
-
