@@ -154,7 +154,23 @@ This file tracks all modifications, bug fixes, enhancements, and file diffs made
 - **Fix Details**:
   - Added `members` to the dependency array `[members, expenses]`.
 - **Tests Added/Updated**: All 18 automated tests passing.
-- **Commit**: `fix: include members in SummaryCards perPerson useMemo dependency array` (Pending approval)
+- **Commit**: `c7067be` - `fix: include members in SummaryCards perPerson useMemo dependency array`
+- **Status**: Committed.
+
+---
+
+### Bug 9: Incomplete LocalStorage Hydration on Page Reload
+- **Affected Files**:
+  - `src/state/store.js`
+  - `tests/store.test.js`
+  - `BUGS.md`
+- **Issue Description**: When page is reloaded, expense dates are loaded as strings rather than Date objects, breaking date methods and causing formatDate to render raw slice strings.
+- **Root Cause**: `loadState` returned `JSON.parse(raw)` directly without running `hydrate()`.
+- **Fix Details**:
+  - Exported `hydrate` from `src/state/store.js`.
+  - Updated `loadState` to run `hydrate(parsed)` on cached localStorage data.
+- **Tests Added/Updated**: Added unit test in `tests/store.test.js` verifying that serialized string dates are converted to `Date` objects on hydration (19/19 passing).
+- **Commit**: `fix: rehydrate dates into Date instances on localStorage reload` (Pending approval)
 - **Status**: Ready for commit approval.
 
 ---

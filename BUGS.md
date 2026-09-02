@@ -105,6 +105,17 @@ Keep this file in the repo and **commit it** with your fixes.
 
 ## Bug 9
 
+**How to reproduce:** Load the app and observe expense dates formatted as "12 Mar 2026". Refresh the page in the browser (F5). The dates suddenly switch formatting to raw sliced strings like "2026-03-12".
+
+**What is wrong:** In `src/state/store.js`, `loadState` parsed raw JSON from `localStorage` and returned `JSON.parse(raw)` directly without hydration. Because JSON stringifies dates, after a refresh `expense.date` became a raw string rather than a `Date` object, causing `formatDate` in `src/lib/format.js` to skip `toLocaleDateString` and fall back to `date.slice(0, 10)`.
+
+**What I changed:**
+- In `src/state/store.js`, exported `hydrate` and updated `loadState` to pass the parsed `localStorage` JSON through `hydrate(parsed)`. This guarantees `expense.date` is always a proper `Date` instance across initial loads and subsequent browser reloads.
+
+---
+
+## Bug 10
+
 **How to reproduce:**
 
 **What is wrong:**
@@ -112,6 +123,7 @@ Keep this file in the repo and **commit it** with your fixes.
 **What I changed:**
 
 ---
+
 
 
 

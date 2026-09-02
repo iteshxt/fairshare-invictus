@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { reducer, nextMemberId } from "../src/state/store.js";
+import { reducer, nextMemberId, hydrate } from "../src/state/store.js";
 
 test("nextMemberId increments highest existing id", () => {
   const members = [{ id: 1 }, { id: 4 }, { id: 2 }];
@@ -87,5 +87,20 @@ test("filtering by paidBy works with string and number representations", () => {
   assert.equal(filtered[0].id, "e1");
   assert.equal(filtered[1].id, "e3");
 });
+
+test("hydrate converts serialized JSON string dates into Date instances", () => {
+  const serialized = {
+    groupName: "Goa weekend",
+    members: [{ id: 1, name: "Aisha" }],
+    expenses: [
+      { id: "e1", description: "Dinner", amount: 50, date: "2026-03-12T00:00:00.000Z" },
+    ],
+  };
+
+  const state = hydrate(serialized);
+  assert.equal(state.expenses[0].date instanceof Date, true);
+  assert.equal(state.expenses[0].date.getFullYear(), 2026);
+});
+
 
 

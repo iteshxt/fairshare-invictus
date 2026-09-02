@@ -1,10 +1,10 @@
 const KEY = "fairshare-v1";
 
-function hydrate(data) {
+export function hydrate(data) {
   return {
     groupName: data.groupName,
-    members: data.members.map((m) => ({ ...m })),
-    expenses: data.expenses.map((e) => ({
+    members: (data.members || []).map((m) => ({ ...m })),
+    expenses: (data.expenses || []).map((e) => ({
       ...e,
       date: new Date(e.date),
     })),
@@ -19,7 +19,8 @@ export function loadState(seed) {
       localStorage.setItem(KEY, JSON.stringify(initial));
       return initial;
     }
-    return JSON.parse(raw);
+    const parsed = JSON.parse(raw);
+    return hydrate(parsed);
   } catch {
     return hydrate(seed);
   }
