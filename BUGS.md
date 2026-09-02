@@ -139,3 +139,14 @@ Keep this file in the repo and **commit it** with your fixes.
 - Added `onKeyDown` to commit on `Enter` via `blur()` and cancel/reset on `Escape`.
 
 ---
+
+## Bug 12
+
+**How to reproduce:** In the "Add expense" form, clear the date input field completely (empty string) and submit the expense. The expense is added with `date: Invalid Date`. The sorting comparator `dateValue(b.date) - dateValue(a.date)` returns `NaN`, breaking array sorting, and the UI displays `"Invalid Date"`.
+
+**What is wrong:** In `src/components/AddExpenseForm.jsx`, `submit` unconditionally instantiated `date: new Date(date)` without checking if the date input was cleared or invalid.
+
+**What I changed:**
+- In `src/components/AddExpenseForm.jsx`, added a date validation step in `submit`: `const parsedDate = date ? new Date(date) : new Date();`. If `Number.isNaN(parsedDate.getTime())`, the form halts and sets an error message `"Please select a valid date."`.
+
+---

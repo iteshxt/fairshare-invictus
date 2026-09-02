@@ -61,6 +61,11 @@ export default function AddExpenseForm({ members, onAdd }) {
       setError("Add a description and a positive amount.");
       return;
     }
+    const parsedDate = date ? new Date(date) : new Date();
+    if (Number.isNaN(parsedDate.getTime())) {
+      setError("Please select a valid date.");
+      return;
+    }
     if (!splitWith.length) {
       setError("Pick at least one person to split with.");
       return;
@@ -77,7 +82,7 @@ export default function AddExpenseForm({ members, onAdd }) {
       splitType,
       splitWith: splitWith.map(Number),
       percents: splitType === "percent" ? percents : undefined,
-      date: new Date(date),
+      date: parsedDate,
       category,
     });
     setDescription("");

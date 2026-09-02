@@ -201,7 +201,21 @@ This file tracks all modifications, bug fixes, enhancements, and file diffs made
   - Added fallback in `onBlur` to reset `draft` to `String(expense.amount)`.
   - Added `onKeyDown` listener to commit on `Enter` (via blur) and revert on `Escape`.
 - **Tests Added/Updated**: All 19 automated tests passing.
-- **Commit**: `fix: reset invalid edit amounts on blur and handle Enter and Escape keys` (Pending approval)
+- **Commit**: `00110c3` - `fix: reset invalid edit amounts on blur and handle Enter and Escape keys`
+- **Status**: Committed.
+
+---
+
+### Bug 12: Cleared / Invalid Date Handling in AddExpenseForm
+- **Affected Files**:
+  - `src/components/AddExpenseForm.jsx`
+  - `BUGS.md`
+- **Issue Description**: When date input was cleared, an `Invalid Date` was stored, corrupting sorting and rendering "Invalid Date".
+- **Root Cause**: `new Date(date)` was called without checking if the date was empty or invalid.
+- **Fix Details**:
+  - Added validation for `parsedDate` in `submit()`. Rejects invalid/empty dates with user-friendly error.
+- **Tests Added/Updated**: All 19 automated tests passing.
+- **Commit**: `fix: validate expense date in AddExpenseForm to prevent Invalid Date entries` (Pending approval)
 - **Status**: Ready for commit.
 
 ---
