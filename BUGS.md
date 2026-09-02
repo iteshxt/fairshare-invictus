@@ -72,6 +72,17 @@ Keep this file in the repo and **commit it** with your fixes.
 
 ## Bug 6
 
+**How to reproduce:** Open the app and observe the Balances panel. A member with a positive net balance (e.g. Ben who paid for Airbnb and is in credit) is displayed with the red label "owes $181.33". Conversely, members with negative net balances (who consumed more than they paid) are shown with the green label "is owed $X.XX".
+
+**What is wrong:** In `src/components/BalancesPanel.jsx`, the condition for displaying labels and CSS styles was inverted: `bal > 0.005` (a creditor who is owed money by the group) assigned `label = 'owes ...'` with `cls = 'owe'`, while `bal < -0.005` (a debtor who owes the group) assigned `label = 'is owed ...'` with `cls = 'owed'`.
+
+**What I changed:**
+- In `src/components/BalancesPanel.jsx`, swapped the labels and CSS classes: positive balances (`bal > 0.005`) now correctly render `is owed ${formatMoney(bal)}` with `cls = "owed"`, and negative balances (`bal < -0.005`) render `owes ${formatMoney(-bal)}` with `cls = "owe"`.
+
+---
+
+## Bug 7
+
 **How to reproduce:**
 
 **What is wrong:**
@@ -79,6 +90,7 @@ Keep this file in the repo and **commit it** with your fixes.
 **What I changed:**
 
 ---
+
 
 
 

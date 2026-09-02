@@ -110,7 +110,22 @@ This file tracks all modifications, bug fixes, enhancements, and file diffs made
   - Refactored `suggestSettlements` to settle `Math.min(d.amount, c.amount)` across all pairs.
   - Generates transfers for exact and partial matches uniformly, advancing debtor/creditor pointers appropriately.
 - **Tests Added/Updated**: `tests/settle.test.js` both tests passing.
-- **Commit**: `fix: resolve exact matching debts in suggestSettlements without dropping transfers` (Pending approval)
+- **Commit**: `84233b4` - `fix: resolve exact matching debts in suggestSettlements without dropping transfers`
+- **Status**: Committed.
+
+---
+
+### Bug 6: Inverted Debtor/Creditor Labels in BalancesPanel
+- **Affected Files**:
+  - `src/components/BalancesPanel.jsx`
+  - `BUGS.md`
+- **Issue Description**: Positive balances were displayed as "owes" (red) and negative balances were displayed as "is owed" (green).
+- **Root Cause**: The ternary/if logic in `BalancesPanel.jsx` had inverted label strings and CSS class assignments.
+- **Fix Details**:
+  - Corrected `bal > 0.005` to render `is owed ${formatMoney(bal)}` with `cls = "owed"`.
+  - Corrected `bal < -0.005` to render `owes ${formatMoney(-bal)}` with `cls = "owe"`.
+- **Tests Added/Updated**: All 17 automated tests passing.
+- **Commit**: `fix: correct inverted debtor and creditor balance labels and styles` (Pending approval)
 - **Status**: Ready for commit approval.
 
 ---
