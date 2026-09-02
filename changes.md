@@ -140,7 +140,21 @@ This file tracks all modifications, bug fixes, enhancements, and file diffs made
 - **Fix Details**:
   - Converted both operands to strings using `String(e.paidBy) !== String(paidBy)` in `src/App.jsx`.
 - **Tests Added/Updated**: Added unit test in `tests/store.test.js` verifying string/number compatibility for `paidBy` filtering.
-- **Commit**: `fix: match paidBy filter using string conversion to resolve type mismatch` (Pending approval)
+- **Commit**: `5b277ae` - `fix: match paidBy filter using string conversion to resolve type mismatch`
+- **Status**: Committed.
+
+---
+
+### Bug 8: Missing members Dependency in SummaryCards perPerson Memo
+- **Affected Files**:
+  - `src/components/SummaryCards.jsx`
+  - `BUGS.md`
+- **Issue Description**: When a new member is added, they do not appear in the "Paid so far" card breakdown.
+- **Root Cause**: `useMemo` for `perPerson` was only dependent on `[expenses]`, omitting `members`.
+- **Fix Details**:
+  - Added `members` to the dependency array `[members, expenses]`.
+- **Tests Added/Updated**: All 18 automated tests passing.
+- **Commit**: `fix: include members in SummaryCards perPerson useMemo dependency array` (Pending approval)
 - **Status**: Ready for commit approval.
 
 ---

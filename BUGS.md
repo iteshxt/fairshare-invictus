@@ -94,6 +94,17 @@ Keep this file in the repo and **commit it** with your fixes.
 
 ## Bug 8
 
+**How to reproduce:** In the Summary card, enter a new member name in the "Add member" form (e.g. "Elena Rostova") and submit. The "Members" count increases from 4 to 5, but Elena is missing from the "Paid so far" breakdown list.
+
+**What is wrong:** In `src/components/SummaryCards.jsx`, the `perPerson` calculation was wrapped in `useMemo` with dependency array `[expenses]`. It omitted `members`. When a new member was added, `expenses` did not change, so `perPerson` was not recomputed and the new member was omitted from the display until an expense was mutated.
+
+**What I changed:**
+- In `src/components/SummaryCards.jsx`, updated the `useMemo` dependency array for `perPerson` to `[members, expenses]`.
+
+---
+
+## Bug 9
+
 **How to reproduce:**
 
 **What is wrong:**
@@ -101,6 +112,7 @@ Keep this file in the repo and **commit it** with your fixes.
 **What I changed:**
 
 ---
+
 
 
 
