@@ -170,8 +170,24 @@ This file tracks all modifications, bug fixes, enhancements, and file diffs made
   - Exported `hydrate` from `src/state/store.js`.
   - Updated `loadState` to run `hydrate(parsed)` on cached localStorage data.
 - **Tests Added/Updated**: Added unit test in `tests/store.test.js` verifying that serialized string dates are converted to `Date` objects on hydration (19/19 passing).
-- **Commit**: `fix: rehydrate dates into Date instances on localStorage reload` (Pending approval)
-- **Status**: Ready for commit approval.
+- **Commit**: `572acdc` - `fix: rehydrate dates into Date instances on localStorage reload`
+- **Status**: Committed.
+
+---
+
+### Bug 10: Stale Member State and Form Reset in AddExpenseForm
+- **Affected Files**:
+  - `src/components/AddExpenseForm.jsx`
+  - `BUGS.md`
+- **Issue Description**: When new members are added to the trip, they are omitted from default split chips and percentage inputs in AddExpenseForm, and submitted form inputs are not cleared.
+- **Root Cause**: `splitWith` and `percents` were only initialized on mount with the initial members list.
+- **Fix Details**:
+  - Added `useEffect` listening to `members` to incorporate new members into `splitWith` and recalculate `percents`.
+  - Added `min="0"` and `max="100"` bounds to percentage inputs.
+  - Cleared `description` and `amount` fields on successful form submission.
+- **Tests Added/Updated**: All 19 automated tests passing.
+- **Commit**: `0306045` - `fix: synchronize AddExpenseForm with dynamic members and reset on submit`
+- **Status**: Committed.
 
 ---
 

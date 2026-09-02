@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { percentsSumTo100 } from "../lib/money.js";
 
 const CATEGORIES = ["Food", "Travel", "Fun", "Stay"];
@@ -23,6 +23,22 @@ export default function AddExpenseForm({ members, onAdd }) {
   const [splitWith, setSplitWith] = useState(members.map((m) => m.id));
   const [percents, setPercents] = useState(evenPercents(members.map((m) => m.id)));
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    setSplitWith((prev) => {
+      const validIds = new Set(members.map((m) => m.id));
+      const kept = prev.filter((id) => validIds.has(id));
+      const newIds = members.map((m) => m.id).filter((id) => !prev.includes(id));
+      const next = [...kept, ...newIds];
+      setPercents(evenPercents(next));
+      return next;
+    });
+
+    setPaidBy((prev) => {
+      if (members.some((m) => m.id === Number(prev))) return prev;
+      return members[0]?.id ?? "";
+    });
+  }, [members]);
 
   const selected = useMemo(
     () => members.filter((m) => splitWith.includes(m.id)),
@@ -64,6 +80,8 @@ export default function AddExpenseForm({ members, onAdd }) {
       date: new Date(date),
       category,
     });
+    setDescription("");
+    setAmount("");
   }
 
   return (
@@ -177,6 +195,8 @@ export default function AddExpenseForm({ members, onAdd }) {
                 <input
                   type="number"
                   step="0.01"
+                  min="0"
+                  max="100"
                   value={percents[m.id] ?? ""}
                   onChange={(e) =>
                     setPercents((p) => ({ ...p, [m.id]: Number(e.target.value) }))

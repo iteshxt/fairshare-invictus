@@ -116,13 +116,18 @@ Keep this file in the repo and **commit it** with your fixes.
 
 ## Bug 10
 
-**How to reproduce:**
+**How to reproduce:** In the Summary card, add a 5th member (e.g. "Elena Rostova"). In the "Add expense" form, Elena's chip appears unselected/inactive by default unlike the other members. Switch to "Custom %" split: Elena does not appear in the percentage grid, and percentage distributions remain fixed to the original 4 members. Furthermore, after submitting an expense, the description and amount inputs are not cleared.
 
-**What is wrong:**
+**What is wrong:** In `src/components/AddExpenseForm.jsx`, `splitWith` and `percents` were initialized only once during mount using `useState(members.map(...))`. When new members were added dynamically, the form never synchronized its participant or percentage state, omitting new members from default splits and percentage distributions.
 
 **What I changed:**
+- In `src/components/AddExpenseForm.jsx`, added a `useEffect` hook listening to `members` to dynamically incorporate newly added members into `splitWith` and recalculate `percents` via `evenPercents()`.
+- Guaranteed that `paidBy` points to a valid member ID when members change.
+- Added `min="0"` and `max="100"` attributes to the percentage number inputs.
+- Automatically cleared `description` and `amount` form fields upon successful expense submission.
 
 ---
+
 
 
 
