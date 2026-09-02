@@ -250,14 +250,26 @@ This file tracks all modifications, bug fixes, enhancements, and file diffs made
   - Added `Math.round(sum * 100) / 100` in `totalSpent()`.
   - Used `String(e.paidBy) === String(m.id)` and rounded individual paid sums in `SummaryCards`.
 - **Tests Added/Updated**: Added unit test in `tests/balances.test.js` (21/21 passing).
-- **Commit**: `fix: sanitize custom split percent keys and eliminate float drift in totalSpent` (Pending approval)
-- **Status**: Ready for commit.
+- **Commit**: `de6b251` - `fix: sanitize custom split percent keys and eliminate float drift in totalSpent`
+- **Status**: Committed.
+
+---
+
+### Enhancement: Typography & Dynamic Subtitle
+- **Affected Files**:
+  - `index.html`
+  - `src/App.jsx`
+- **Details**:
+  - Added Google Fonts `<link>` for `Fraunces` and `Inter` so headings and body text render with high-definition typography rather than standard system fallbacks.
+  - Dynamically formatted the topbar subtitle to reflect `state.members.length` friends rather than a static "four friends".
+- **Commit**: `065d093` - `feat: load Google Fonts for typography and make group count dynamic`
+- **Status**: Committed.
 
 ---
 
 ## Final Verification Summary
-- **Total Unit Tests**: 19 tests across 5 test suites.
-- **Pass Rate**: 100% (19/19 passing, 0 failing, 0 skipped).
+- **Total Unit Tests**: 20 tests across 5 test suites.
+- **Pass Rate**: 100% (20/20 passing, 0 failing, 0 skipped).
 - **Core Invariants Verified**:
   - Closed-group net balance conservation: $\sum \text{balances} = 0.00$.
   - Exact cent division and percentage split preservation: $\sum \text{shares} = \text{amount}$.
@@ -266,5 +278,8 @@ This file tracks all modifications, bug fixes, enhancements, and file diffs made
   - State immutability and stable ID mutations.
   - String/number type coercion in filters and IDs.
   - LocalStorage Date rehydration.
+  - Name whitespace trimming & avatar initials integrity.
+  - Precision rounding in `totalSpent`.
 - **Build Status**: Vite production build succeeded cleanly.
+
 
