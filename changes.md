@@ -95,7 +95,22 @@ This file tracks all modifications, bug fixes, enhancements, and file diffs made
   - Removed lines 16–19 in `src/lib/balances.js` so payers retain 100% credit for amounts paid.
   - Added clean rounding to 2 decimals for all final member balances.
 - **Tests Added/Updated**: `tests/balances.test.js` both tests passing.
-- **Commit**: `fix: credit non-participating payers in full and enforce zero-sum balances` (Pending approval)
+- **Commit**: `0860bce` - `fix: credit non-participating payers in full and enforce zero-sum balances`
+- **Status**: Committed.
+
+---
+
+### Bug 5: Settlement Algorithm Drops Exact Matching Debts
+- **Affected Files**:
+  - `src/lib/settle.js`
+  - `BUGS.md`
+- **Issue Description**: When a debtor amount equals a creditor amount, the settlement algorithm increments loop pointers without generating a transfer, leaving debts unresolved.
+- **Root Cause**: `if (d.amount > c.amount) ... else if (d.amount < c.amount) ... else { i++; j++; }` skipped pushing transfers on equality.
+- **Fix Details**:
+  - Refactored `suggestSettlements` to settle `Math.min(d.amount, c.amount)` across all pairs.
+  - Generates transfers for exact and partial matches uniformly, advancing debtor/creditor pointers appropriately.
+- **Tests Added/Updated**: `tests/settle.test.js` both tests passing.
+- **Commit**: `fix: resolve exact matching debts in suggestSettlements without dropping transfers` (Pending approval)
 - **Status**: Ready for commit approval.
 
 ---

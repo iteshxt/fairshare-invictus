@@ -59,6 +59,19 @@ Keep this file in the repo and **commit it** with your fixes.
 
 ## Bug 5
 
+**How to reproduce:** In a group where Member A owes $50 and Member B is owed $50, open the "Settle up" panel. The panel reports "Everyone is settled." despite both members having an active $50 outstanding debt/credit.
+
+**What is wrong:** In `src/lib/settle.js`, the greedy matching loop compared debtor and creditor balances using `if (d.amount > c.amount)` and `else if (d.amount < c.amount)`. When `d.amount === c.amount` (the `else` branch), the code incremented pointers `i += 1; j += 1;` without calling `transfers.push(...)`. Exactly matching debts were completely dropped, leaving members with unresolved balances.
+
+**What I changed:**
+- Refactored `suggestSettlements` in `src/lib/settle.js` to transfer `const amount = Math.min(d.amount, c.amount)` and push the transfer whenever `amount > 0.005`.
+- Deducted `amount` from both `d.amount` and `c.amount`, advancing `i` when `d.amount <= 0.005` and advancing `j` when `c.amount <= 0.005`.
+- Handled all matching and non-matching debts uniformly without dropping transfers, rounding transfer amounts to 2 decimal places.
+
+---
+
+## Bug 6
+
 **How to reproduce:**
 
 **What is wrong:**
@@ -66,5 +79,6 @@ Keep this file in the repo and **commit it** with your fixes.
 **What I changed:**
 
 ---
+
 
 
