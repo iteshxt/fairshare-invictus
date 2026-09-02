@@ -42,7 +42,13 @@ function ExpenseRow({ expense, memberMap, onDelete, onSaveAmount }) {
               const n = Number(draft);
               if (Number.isFinite(n) && n > 0 && n !== Number(expense.amount)) {
                 onSaveAmount(n);
+              } else {
+                setDraft(String(expense.amount));
               }
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") e.currentTarget.blur();
+              if (e.key === "Escape") setDraft(String(expense.amount));
             }}
             aria-label={`Edit amount for ${expense.description}`}
           />

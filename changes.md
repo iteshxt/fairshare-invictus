@@ -191,6 +191,21 @@ This file tracks all modifications, bug fixes, enhancements, and file diffs made
 
 ---
 
+### Bug 11: ExpenseRow Edit Amount Desync & Keyboard Navigation
+- **Affected Files**:
+  - `src/components/ExpenseList.jsx`
+  - `BUGS.md`
+- **Issue Description**: When invalid or unchanged amounts were blurred, the edit input retained the un-persisted text instead of resetting. Enter key did not submit edits.
+- **Root Cause**: Missing `else` fallback in `onBlur` and absence of `onKeyDown` listeners.
+- **Fix Details**:
+  - Added fallback in `onBlur` to reset `draft` to `String(expense.amount)`.
+  - Added `onKeyDown` listener to commit on `Enter` (via blur) and revert on `Escape`.
+- **Tests Added/Updated**: All 19 automated tests passing.
+- **Commit**: `fix: reset invalid edit amounts on blur and handle Enter and Escape keys` (Pending approval)
+- **Status**: Ready for commit.
+
+---
+
 ## Final Verification Summary
 - **Total Unit Tests**: 19 tests across 5 test suites.
 - **Pass Rate**: 100% (19/19 passing, 0 failing, 0 skipped).

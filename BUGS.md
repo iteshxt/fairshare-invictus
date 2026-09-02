@@ -127,3 +127,15 @@ Keep this file in the repo and **commit it** with your fixes.
 - Automatically cleared `description` and `amount` form fields upon successful expense submission.
 
 ---
+
+## Bug 11
+
+**How to reproduce:** In an expense row's edit amount input, enter an invalid string like "abc" or a negative amount "-10" and click anywhere outside. The input displays "abc" or "-10" instead of reverting to the actual stored expense amount. Additionally, pressing Enter does not trigger saving.
+
+**What is wrong:** In `src/components/ExpenseList.jsx`, `onBlur` checked `if (Number.isFinite(n) && n > 0 && n !== Number(expense.amount)) onSaveAmount(n);` but did not have an `else` branch to restore the `draft` state when invalid input was supplied. This resulted in an unpersisted visual desync between the input value and application state. Furthermore, keyboard listeners (`Enter` / `Escape`) were absent.
+
+**What I changed:**
+- In `src/components/ExpenseList.jsx`, added an `else` clause in `onBlur` that resets `draft` to `String(expense.amount)`.
+- Added `onKeyDown` to commit on `Enter` via `blur()` and cancel/reset on `Escape`.
+
+---
