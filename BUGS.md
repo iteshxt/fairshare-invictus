@@ -34,6 +34,19 @@ Keep this file in the repo and **commit it** with your fixes.
 
 ## Bug 3
 
+**How to reproduce:** Add an expense of $100.00 split equally among 3 people, or an expense of $10.00 split 33.33%, 33.33%, 33.34%. In both cases, the calculated shares sum to $99.99 and $9.99 respectively, losing $0.01. Furthermore, entering percentage splits like -50% and 150% is erroneously accepted because only the sum was checked.
+
+**What is wrong:** `splitEqual` and `splitByPercent` in `src/lib/money.js` rounded each individual participant's share independently using `.toFixed(2)`. The sum of truncated shares drifted away from the original bill amount, violating the core requirement: *"Those portions together should make up the full bill — the group should not 'lose' or 'invent' money in the rounding."* Additionally, `percentsSumTo100` evaluated strict equality (`=== 100`) without floating-point tolerance, and allowed negative percentages.
+
+**What I changed:**
+- In `src/lib/money.js`, refactored `splitEqual` to compute integer cents (`totalCents = Math.round(amount * 100)`), assign `base = Math.floor(totalCents / n)`, and distribute remainder cents (`totalCents % n`) across shares so `sum(shares) === amount` exactly to the cent.
+- In `splitByPercent`, allocated integer cents per percentage and assigned the residual balance to the final share, ensuring exact-cent conservation.
+- In `percentsSumTo100`, validated that every percentage value is a finite number between 0 and 100, and verified the sum equals 100 within floating-point tolerance (`Math.abs(sum - 100) < 0.01`).
+
+---
+
+## Bug 4
+
 **How to reproduce:**
 
 **What is wrong:**
@@ -41,4 +54,5 @@ Keep this file in the repo and **commit it** with your fixes.
 **What I changed:**
 
 ---
+
 

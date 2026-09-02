@@ -64,7 +64,23 @@ This file tracks all modifications, bug fixes, enhancements, and file diffs made
   - Updated `ExpenseList.jsx` to pass `expense.id` to delete/update handlers and use `key={expense.id}`.
   - Added `useEffect` in `ExpenseRow` to sync draft amounts when `expense.amount` changes externally.
 - **Tests Added/Updated**: Added unit tests in `tests/store.test.js` for ID-based delete and update mutations.
-- **Commit**: `fix: mutate expenses by stable id and bind React keys to expense id` (Pending approval)
+- **Commit**: `788778f` - `fix: mutate expenses by stable id and bind React keys to expense id`
+- **Status**: Committed.
+
+---
+
+### Bug 3: Equal and Percentage Splits Lose/Invent Pennies & Floating-Point Validation
+- **Affected Files**:
+  - `src/lib/money.js`
+  - `BUGS.md`
+- **Issue Description**: Equal and custom percentage splits lose or invent pennies due to independent truncation, and invalid/negative percentage splits are accepted.
+- **Root Cause**: Shares were rounded independently using `.toFixed(2)` without allocating remainder cents, and `percentsSumTo100` did not validate ranges or floating-point sums.
+- **Fix Details**:
+  - Refactored `splitEqual` to allocate integer cents with remainder distribution so `sum(shares) === amount` down to the cent.
+  - Refactored `splitByPercent` to allocate integer cents and absorb residual cents in the final participant's share.
+  - Hardened `percentsSumTo100` to reject negative/non-finite percentages and check `Math.abs(sum - 100) < 0.01`.
+- **Tests Added/Updated**: `tests/money.test.js` all 5 tests passing.
+- **Commit**: `fix: preserve exact split totals without penny loss and validate percentages` (Pending approval)
 - **Status**: Ready for commit approval.
 
 ---
